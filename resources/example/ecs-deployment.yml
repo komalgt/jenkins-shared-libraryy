@@ -1,0 +1,7 @@
+# Sample CloudFormation template for ECS (customize as needed)
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: SampleCluster

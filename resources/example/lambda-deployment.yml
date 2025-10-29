@@ -1,0 +1,13 @@
+# Sample CloudFormation template for Lambda (customize as needed)
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: SampleFunction
+      Handler: index.handler
+      Role: arn:aws:iam::<acct-id>:role/lambda-ex
+      Runtime: python3.9
+      Code:
+        S3Bucket: my-bucket
+        S3Key: my-lambda.zip
