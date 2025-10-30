@@ -16,13 +16,13 @@ class LambdaDeployer implements Serializable {
             $class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: config.awsCredentialsId
         ]]) {
-            steps.sh """
-                export AWS_DEFAULT_REGION=${config.awsRegion}
-                aws lambda update-function-code \\
-                  --function-name ${config.functionName} \\
-                  --s3-bucket ${config.s3Bucket} \\
-                  --s3-key ${config.s3Key}
-            """
+            steps.sh '''
+                export AWS_DEFAULT_REGION='${config.awsRegion}'
+                aws lambda update-function-code \
+                  --function-name '${config.functionName}' \
+                  --s3-bucket '${config.s3Bucket}' \
+                  --s3-key '${config.s3Key}'
+            '''
         }
         steps.echo "Deployment to Lambda function '${config.functionName}' in region '${config.awsRegion}' initiated."
     }
