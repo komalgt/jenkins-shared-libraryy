@@ -12,16 +12,12 @@ class LambdaDeployer implements Serializable {
      * Usage params: functionName, s3Bucket, s3Key, awsRegion, awsCredentialsId
      */
     def deploy(Map config) {
-        steps.withCredentials([steps.usernamePassword(
-            credentialsId: config.awsCredentialsId,
-            usernameVariable: 'AWS_ACCESS_KEY_ID',
-            passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-        )]) {
+        steps.withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: config.awsCredentialsId
+        ]]) {
             steps.sh """
-                export AWS_ACCESS_KEY_ID=\$AWS_ACCESS_KEY_ID
-                export AWS_SECRET_ACCESS_KEY=\$AWS_SECRET_ACCESS_KEY
                 export AWS_DEFAULT_REGION=${config.awsRegion}
-
                 aws lambda update-function-code \\
                   --function-name ${config.functionName} \\
                   --s3-bucket ${config.s3Bucket} \\
