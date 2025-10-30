@@ -1,4 +1,3 @@
-#deployECS.groovy
 /**
  * Deploy to AWS ECS via shared library.
  * Usage:
