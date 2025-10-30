@@ -14,15 +14,5 @@ class ECSDeployer implements Serializable {
             $class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: config.awsCredentialsId
         ]]) {
-            steps.sh """
-                export AWS_DEFAULT_REGION=${config.awsRegion}
-                aws ecs update-service \\
-                    --cluster ${config.cluster} \\
-                    --service ${config.service} \\
-                    --force-new-deployment \\
-                    --region ${config.awsRegion}
-            """
-        }
-        steps.echo "Successfully deployed ECS service: ${config.service}"
-    }
-}
+            steps.sh '''
+                export AWS_DEFAULT_REGION='${config.awsRegion
