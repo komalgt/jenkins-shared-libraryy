@@ -2,20 +2,24 @@ package org.example
 
 class ECSDeployer implements Serializable {
     def steps
+
     ECSDeployer(steps) { this.steps = steps }
+
+    /**
+     * Deploys to an AWS ECS service.
+     * Usage params: cluster, service, awsRegion, awsCredentialsId
+     */
     def deploy(Map config) {
-        steps.withCredentials([steps.usernamePassword(
-            credentialsId: config.awsCredentialsId,
-            usernameVariable: 'AWS_ACCESS_KEY_ID',
-            passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-        )]) {
+        steps.withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: config.awsCredentialsId
+        ]]) {
             steps.sh """
-                export AWS_ACCESS_KEY_ID=\$AWS_ACCESS_KEY_ID
-                export AWS_SECRET_ACCESS_KEY=\$AWS_SECRET_ACCESS_KEY
-                aws ecs update-service \
-                    --cluster ${config.cluster} \
-                    --service ${config.service} \
-                    --force-new-deployment \
+                export AWS_DEFAULT_REGION=${config.awsRegion}
+                aws ecs update-service \\
+                    --cluster ${config.cluster} \\
+                    --service ${config.service} \\
+                    --force-new-deployment \\
                     --region ${config.awsRegion}
             """
         }
